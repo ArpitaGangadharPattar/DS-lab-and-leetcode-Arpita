@@ -1,0 +1,63 @@
+#include <stdio.h>
+#define MAX 100
+
+int hashTable[MAX];
+int m;
+
+void initHashTable() {
+    int i;
+    for (i = 0; i < m; i++)
+        hashTable[i] = -1;
+}
+
+void insert(int key) {
+    int index, i;
+
+    index = key % m;
+
+    if (hashTable[index] == -1) {
+        hashTable[index] = key;
+    } else {
+        for (i = (index + 1) % m; i != index; i = (i + 1) % m) {
+            if (hashTable[i] == -1) {
+                hashTable[i] = key;
+                return;
+            }
+        }
+        printf("Hash table is full. Cannot insert key %d\n", key);
+    }
+}
+
+void display() {
+    int i;
+    printf("\nHash Table Contents:\n");
+    printf("Address  Key\n");
+    for (i = 0; i < m; i++) {
+        if (hashTable[i] != -1)
+            printf("%5d   %4d\n", i, hashTable[i]);
+        else
+            printf("%5d   ----\n", i);
+    }
+}
+
+int main() {
+    int n, key, i;
+
+    printf("Enter size of hash table (m): ");
+    scanf("%d", &m);
+
+    initHashTable();
+
+    printf("Enter number of employee records (N): ");
+    scanf("%d", &n);
+
+    for (i = 0; i < n; i++) {
+        printf("Enter 4-digit key: ");
+        scanf("%d", &key);
+        insert(key);
+    }
+
+    display();
+
+    return 0;
+}   
